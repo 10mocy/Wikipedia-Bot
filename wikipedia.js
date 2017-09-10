@@ -35,7 +35,7 @@ client.on("message", message => {
                         sendMessage(message.channel,
                             {
                                 embed: {
-                                    title: "「" + word + "」は存在しません。",
+                                    title: "Wikipediaに「" + word + "」というページは存在しません。",
                                     color: 16726072
                                 }
                             }

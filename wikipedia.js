@@ -14,7 +14,7 @@ client.on("message", message => {
         
         const toha = /^(.*)[\s　]#とは$/;
         if(toha.test(message.content)) {
-            const word = message.content.match(toha)[1];
+            let word = message.content.match(toha)[1];
             word = word.replace(/[\s　]/g, "");
             const url = "https://ja.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&redirects=1&explaintext=1&titles=" + encodeURIComponent(word);
             let content = "";

@@ -29,7 +29,7 @@ client.on("message", message => {
 
                 res.on("end", (res) => {
                     console.log(content);
-                    /*data = JSON.parse(content);
+                    data = JSON.parse(content);
                     console.log(data);
                     if(-1 in data.query.pages) {
                         sendMessage(message.channel,
@@ -55,7 +55,7 @@ client.on("message", message => {
                                 }
                             }
                         );
-                    }*/
+                    }
                 });
             });
 

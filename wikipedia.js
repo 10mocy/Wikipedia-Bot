@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const https = require("https");
 const client = new Discord.Client();
 
-client.login("");
+client.login("MzU2NDMwNjc4Njg0MDczOTg2.DJbkxQ.APZIefGhS8XDP5-Bev-h79ZYAJY");
 client.on("ready", () => {
     writeLog("システム", "準備が整いました。");
 });
@@ -29,8 +29,8 @@ client.on("message", message => {
 
                 res.on("end", (res) => {
                     data = JSON.parse(content);
-                    console.log(data);
                     if(-1 in data.query.pages) {
+                        
                         sendMessage(message.channel,
                             {
                                 embed: {

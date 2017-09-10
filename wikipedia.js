@@ -15,7 +15,7 @@ client.on("message", message => {
         const toha = /^(.*)[\s　]#とは$/;
         if(toha.test(message.content)) {
             const word = message.content.match(toha)[1];
-            const url = "https://ja.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&redirects=1&explaintext=1&titles=" + word;
+            const url = "https://ja.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&redirects=1&explaintext=1&titles=" + encodeURIComponent(word);
             let content = "";
             let data;
             let wikiinfo;
@@ -28,9 +28,10 @@ client.on("message", message => {
                 });
 
                 res.on("end", (res) => {
-                    data = JSON.parse(content);
+                    console.log(content);
+                    /*data = JSON.parse(content);
+                    console.log(data);
                     if(-1 in data.query.pages) {
-                        
                         sendMessage(message.channel,
                             {
                                 embed: {
@@ -44,7 +45,6 @@ client.on("message", message => {
 
                         for(key in data.query.pages) {
                             wikiinfo = data["query"]["pages"][key]["extract"].split(/。/);
-                            console.log(wikiinfo);
                         }
                         sendMessage(message.channel,
                             {
@@ -55,7 +55,7 @@ client.on("message", message => {
                                 }
                             }
                         );
-                    }
+                    }*/
                 });
             });
 

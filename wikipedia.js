@@ -29,21 +29,33 @@ client.on("message", message => {
 
                 res.on("end", (res) => {
                     data = JSON.parse(content);
-                    for(key in data.query.pages) {
-                        wikiinfo = data["query"]["pages"][key]["extract"].split(/。/);
-                        console.log(wikiinfo);
-                    }
-                    sendMessage(message.channel,
-                        {
-                            embed: {
-                                title: "「" + word + "」の定義",
-                                description: wikiinfo[0] + "。",
-                                color: 16726072,
-                                url: "https://ja.wikipedia.org/wiki/" + word
+                    console.log(data);
+                    if(-1 in data.query.pages) {
+                        sendMessage(message.channel,
+                            {
+                                embed: {
+                                    title: "「" + word + "」は存在しません。",
+                                    color: 16726072
+                                }
                             }
-                        }
-                    );
+                        );
 
+                    } else {
+
+                        for(key in data.query.pages) {
+                            wikiinfo = data["query"]["pages"][key]["extract"].split(/。/);
+                            console.log(wikiinfo);
+                        }
+                        sendMessage(message.channel,
+                            {
+                                embed: {
+                                    title: "「" + word + "」の定義",
+                                    description: wikiinfo[0] + "。",
+                                    url: "https://ja.wikipedia.org/wiki/" + word
+                                }
+                            }
+                        );
+                    }
                 });
             });
 

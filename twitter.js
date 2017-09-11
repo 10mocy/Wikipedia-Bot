@@ -23,7 +23,7 @@ bot.stream('user', {}, function(stream) {
                 result = search.substr(0, 101) + "\n" + "https://ja.wikipedia.org/wiki/" + encodeURIComponent(word);
             } else {
                 writeLog("Wikipedia", "Wikipediaに「" + word + "」というページは存在しません。");
-                result = "Wikipediaにそのページは存在していません。";
+                result = "Wikipediaにそのページは存在しません。";
             }
             sendMessage(result, event.id_str, event.user.screen_name);
         }

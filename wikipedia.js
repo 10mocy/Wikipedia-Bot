@@ -14,16 +14,17 @@ client.on("message", message => {
     
     if(channel.type === "dm") {
         sender = channel.recipient;
-        suffix = "(ダイレクトメッセージ)";
+        suffix = sender.tag + "(ダイレクトメッセージ)";
     } else if(channel.type === "text") {
         sender = message.member;
-        suffix = "(#" + channel.name + " << " + message.guild.name + ")";
+        suffix = sender.tag + "(#" + channel.name + " << " + message.guild.name + ")";
     }
 
     if(sender.id !== "356430678684073986") {
 
         writeLog("メッセージ受信", message.content + " <--- " + suffix);
         const toha = /^(.*)[\s　]#とは$/;
+
         if(toha.test(message.content)) {
             let word = message.content.match(toha)[1];
             word = word.replace(/[\s　]/g, "");
@@ -41,7 +42,6 @@ client.on("message", message => {
 
                 res.on("end", (res) => {
                     data = JSON.parse(content);
-                    console.log(data.query.pages);
                     if(-1 in data.query.pages) {
                         message.reply(
                             {
@@ -56,8 +56,8 @@ client.on("message", message => {
 
                         for(key in data.query.pages) {
                             wikiinfo = data["query"]["pages"][key]["extract"].split(/。/);
-                            console.log(wikiinfo);
                         }
+
                         sendMessage(message.channel,
                             {
                                 embed: {
@@ -67,6 +67,7 @@ client.on("message", message => {
                                 }
                             }
                         );
+
                     }
                 });
             });
@@ -74,6 +75,7 @@ client.on("message", message => {
         }
     }
 });
+
 function sendMessage(channel, message) {
     writeLog("メッセージ送信", message + " ---> #" + channel.name);
     channel.send(message);

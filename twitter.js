@@ -19,12 +19,11 @@ bot.stream('user', {}, function(stream) {
             let result;
 
             if(search !== null) {
-                result = search + "\n" + "https://ja.wikipedia.org/wiki/" + encodeURIComponent(word);
+                result = search.substr(0, 101) + "\n" + "https://ja.wikipedia.org/wiki/" + encodeURIComponent(word);
             } else {
                 result = "Wikipediaにそのページは存在していません。";
             }
-
-            sendMessage(result, event.user.screen_name);
+            sendMessage(result, event.id);
         }
 
     });
@@ -34,8 +33,11 @@ bot.stream('user', {}, function(stream) {
     });
 });
 
-function sendMessage(text, screen_name) {
-    bot.post('statuses/update', {status: "@" + screen_name + " "+ text})
+function sendMessage(text, screen_name, replyid) {
+    bot.post('statuses/update', {
+        status: text, 
+        in_reply_to_status_id: replyid
+    })
         .then(function (tweet) {
             writeLog("ツイート送信", text + " ---> @" + screen_name);
         })

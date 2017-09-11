@@ -3,6 +3,7 @@ const request = require('sync-request');
 exports.search = function(word) {
     
     const wikicontent = /(.*):(.*)/;
+    
     let result;
 
     if(!wikicontent.test(word)) {

@@ -23,7 +23,7 @@ bot.stream('user', {}, function(stream) {
             } else {
                 result = "Wikipediaにそのページは存在していません。";
             }
-            sendMessage(result, event.id);
+            sendMessage(result, event.id_str, event.user.screen_name);
         }
 
     });
@@ -33,7 +33,7 @@ bot.stream('user', {}, function(stream) {
     });
 });
 
-function sendMessage(text, screen_name, replyid) {
+function sendMessage(text, replyid, screen_name) {
     bot.post('statuses/update', {
         status: text, 
         in_reply_to_status_id: replyid

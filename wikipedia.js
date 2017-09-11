@@ -1,99 +1,61 @@
-const Discord = require("discord.js");
-const https = require("https");
-const client = new Discord.Client();
+const request = require('sync-request');
 
-client.login("");
-client.on("ready", () => {
-    writeLog("システム", "準備が整いました。");
-});
-
-client.on("message", message => {
-    let sender;
-    let suffix;
-    const channel = message.channel;
+exports.search = function(word) {
     
-    if(channel.type === "dm") {
-        sender = channel.lastMessage.author;
-        suffix = sender.tag + "(ダイレクトメッセージ)";
-    } else if(channel.type === "text") {
-        sender = message.member;
-        suffix = sender.tag + "(#" + channel.name + " << " + message.guild.name + ")";
-    }
+    const wikicontent = /(.*):(.*)/;
+    let result;
 
-    if(sender.id !== "356430678684073986") {
+    if(!wikicontent.test(word)) {
 
-        writeLog("メッセージ受信", message.content + " <--- " + suffix);
-        const toha = /^(.*)[\s　]#とは$/;
+        const endpoint = "https://ja.wikipedia.org/w/api.php";
+        const parameter = "?action=query&format=json&prop=extracts&redirects=1&explaintext=1&titles=" + encodeURIComponent(word);
+        let data;
+        
+        /*request("GET", endpoint + parameter, (res) => {
+            console.log(res.getBody());
+        });*/
+        var res = request("GET", endpoint + parameter);
+        const content = res.getBody("utf8");
+        data = JSON.parse(content);
+        
+        if(-1 in data.query.pages) {
+            // 存在しない時
+            result = null;
+        } else {
+            // 存在する時
+            let wikiinfo; // Wikipedia 情報取得管理
+            for(key in data.query.pages) {
+                result = data["query"]["pages"][key]["extract"].split(/。/)[0] + "。";
+            }
+        }
 
-        if(toha.test(message.content)) {
-            let word = message.content.match(toha)[1];
-            word = word.replace(/[\s　]/g, "");
-            const url = "https://ja.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&redirects=1&explaintext=1&titles=" + encodeURIComponent(word);
-            let content = "";
-            let data;
-            let wikiinfo;
+        /*https.get(, (res) => {
+            res.setEncoding("utf8");
 
-            https.get(url, (res) => {
-                res.setEncoding("utf8");
-
-                res.on("data", (chunk) => {
-                    content += chunk;
-                });
-
-                res.on("end", (res) => {
-                    data = JSON.parse(content);
-                    if(-1 in data.query.pages) {
-                        
-                        writeLog("Wikipedia", "Wikipediaに「" + word + "」というページは存在しません。");
-                        sendMessage(channel, 
-                            {
-                                embed: {
-                                    title: "Wikipediaに「" + word + "」というページは存在しません。",
-                                    color: 16726072
-                                }
-                            },
-                            suffix
-                        );
-
-                    } else {
-
-                        for(key in data.query.pages) {
-                            wikiinfo = data["query"]["pages"][key]["extract"].split(/。/);
-                        }
-
-                        writeLog("Wikipedia", "「" + word + "」のWikipediaページが見つかりました。");
-                        sendMessage(channel,
-                            {
-                                embed: {
-                                    title: "「" + word + "」の定義",
-                                    description: wikiinfo[0] + "。",
-                                    url: "https://ja.wikipedia.org/wiki/" + word
-                                }
-                            },
-                            suffix
-                        );
-
-                    }
-                });
+            // データ取得
+            res.on("data", (chunk) => {
+                content += chunk;
             });
 
-        }
+            // データ整形
+            res.on("end", (res) => {
+                data = JSON.parse(content);
+                
+                if(-1 in data.query.pages) {
+                    // 存在しない時
+                    result = null;
+                } else {
+                    // 存在する時
+                    let wikiinfo; // Wikipedia 情報取得管理
+                    for(key in data.query.pages) {
+                        result = data["query"]["pages"][key]["extract"].split(/。/)[0] + "。";
+                    }
+                }
+            });
+            
+        });*/
+    } else {
+        result = null;
     }
-});
-
-function sendMessage(channel, message, suffix) {
-    writeLog("メッセージ送信", message + " ---> " + suffix);
-    channel.send(message);
-}
-
-function writeLog(title, detail) {
-    console.log("-----\n"+ title + "\n\n    " + detail + "\n");
-}
-
-function replace(source, replacers) {
-    let replaced = source;
-    for(const replacer of replacers) {
-        replaced = replaced.replace(replacer[0], replacer[1]);
-    }
-    return replaced;
+    return result;
 }

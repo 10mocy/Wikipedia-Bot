@@ -1,8 +1,6 @@
 const Discord = require("discord.js");
-var async = require('async');
 const wikipedia = require("./wikipedia.js");
 const token = require("./token.js");
-const https = require("https");
 const client = new Discord.Client();
 
 client.login(token.discord);

@@ -2,16 +2,27 @@ const Discord = require("discord.js");
 const https = require("https");
 const client = new Discord.Client();
 
-client.login("MzU2NDMwNjc4Njg0MDczOTg2.DJbkxQ.APZIefGhS8XDP5-Bev-h79ZYAJY");
+client.login("");
 client.on("ready", () => {
     writeLog("システム", "準備が整いました。");
 });
 
 client.on("message", message => {
-    const sender = message.member;
+    let sender;
+    let suffix;
+    const channel = message.channel;
+    
+    if(channel.type === "dm") {
+        sender = channel.recipient;
+        suffix = "(ダイレクトメッセージ)";
+    } else if(channel.type === "text") {
+        sender = message.member;
+        suffix = "(#" + channel.name + " << " + message.guild.name + ")";
+    }
+
     if(sender.id !== "356430678684073986") {
-        writeLog("メッセージ受信", message.content + " <--- " + sender.user.tag + "(#" + message.channel.name + " << " + message.guild.name + ")");
-        
+
+        writeLog("メッセージ受信", message.content + " <--- " + suffix);
         const toha = /^(.*)[\s　]#とは$/;
         if(toha.test(message.content)) {
             let word = message.content.match(toha)[1];
@@ -32,7 +43,7 @@ client.on("message", message => {
                     data = JSON.parse(content);
                     console.log(data.query.pages);
                     if(-1 in data.query.pages) {
-                        sendMessage(message.channel,
+                        message.reply(
                             {
                                 embed: {
                                     title: "Wikipediaに「" + word + "」というページは存在しません。",

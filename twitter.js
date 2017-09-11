@@ -11,7 +11,7 @@ bot.stream('user', {}, function(stream) {
     stream.on('data', function(event) {
         
         writeLog("ツイート受信", event.text + " <--- @" + event.user.screen_name);
-        
+
         const toha = /^(.*)#とは$/;
         if(toha.test(event.text)) {
             const word = event.text.match(toha)[1];
@@ -37,7 +37,7 @@ bot.stream('user', {}, function(stream) {
 
 function sendMessage(text, replyid, screen_name) {
     bot.post('statuses/update', {
-        status: text, 
+        status: "@" + screen_name + " " + text, 
         in_reply_to_status_id: replyid
     })
         .then(function (tweet) {

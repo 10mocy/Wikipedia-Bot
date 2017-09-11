@@ -19,8 +19,10 @@ bot.stream('user', {}, function(stream) {
             let result;
 
             if(search !== null) {
+                writeLog("Wikipedia", "「" + word + "」のWikipediaページが見つかりました。");
                 result = search.substr(0, 101) + "\n" + "https://ja.wikipedia.org/wiki/" + encodeURIComponent(word);
             } else {
+                writeLog("Wikipedia", "Wikipediaに「" + word + "」というページは存在しません。");
                 result = "Wikipediaにそのページは存在していません。";
             }
             sendMessage(result, event.id_str, event.user.screen_name);

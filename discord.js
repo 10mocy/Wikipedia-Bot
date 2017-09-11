@@ -34,6 +34,7 @@ client.on("message", message => {
             let result;
 
             if(search !== null) {
+                writeLog("Wikipedia", "「" + word + "」のWikipediaページが見つかりました。");
                 result = {
                     embed: {
                         title: "「" + word + "」の定義",
@@ -42,6 +43,7 @@ client.on("message", message => {
                     }
                 };
             } else {
+                writeLog("Wikipedia", "Wikipediaに「" + word + "」というページは存在しません。");
                 result = {
                     embed: {
                         title: "Wikipediaに「" + word + "」というページは存在しません。",

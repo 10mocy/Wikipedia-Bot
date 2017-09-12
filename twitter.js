@@ -17,7 +17,6 @@ bot.stream('user', {}, function(stream) {
 
         if(sToha.test(event.text)) {
             const word = event.text.match(mToha)[1];
-            console.log(word);
             const search = wikipedia.search(word);
             let result;
 

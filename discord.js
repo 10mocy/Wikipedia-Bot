@@ -25,8 +25,10 @@ client.on("message", message => {
 
         writeLog("メッセージ受信", message.content + " <--- " + suffix);
         
-        const toha = /^(.*)#とは$/;
-        if(toha.test(message.content)) {
+        const sToha = /^(.*)#とは$/;
+        const mToha = /^(.*)\s#とは$/;
+
+        if(sToha.test(message.content)) {
             const word = message.content.match(toha)[1];
             const search = wikipedia.search(word);
             let result;

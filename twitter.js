@@ -12,9 +12,12 @@ bot.stream('user', {}, function(stream) {
         
         writeLog("ツイート受信", event.text + " <--- @" + event.user.screen_name);
 
-        const toha = /^(.*)#とは$/;
-        if(toha.test(event.text)) {
-            const word = event.text.match(toha)[1];
+        const sToha = /^(.*)#とは$/;
+        const mToha = /^(.*)\s#とは$/;
+
+        if(sToha.test(event.text)) {
+            const word = event.text.match(mToha)[1];
+            console.log(word);
             const search = wikipedia.search(word);
             let result;
 

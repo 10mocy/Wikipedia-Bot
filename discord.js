@@ -29,30 +29,33 @@ client.on("message", message => {
         const mToha = /^(.*)\s#とは$/;
 
         if(sToha.test(message.content)) {
-            const word = message.content.match(toha)[1];
-            const search = wikipedia.search(word);
-            let result;
+            const messagetext = event.text.match(mToha);
+            if(1 in messagetext) {
+                const word = messagetext[1];
+                const search = wikipedia.search(word);
+                let result;
 
-            if(search !== null) {
-                writeLog("Wikipedia", "「" + word + "」のWikipediaページが見つかりました。");
-                result = {
-                    embed: {
-                        title: "「" + word + "」の定義",
-                        description: search + "。",
-                        url: "https://ja.wikipedia.org/wiki/" + encodeURIComponent(word)
-                    }
-                };
-            } else {
-                writeLog("Wikipedia", "Wikipediaに「" + word + "」というページは存在しません。");
-                result = {
-                    embed: {
-                        title: "Wikipediaに「" + word + "」というページは存在しません。",
-                        color: 16726072
-                    }
-                };
+                if(search !== null) {
+                    writeLog("Wikipedia", "「" + word + "」のWikipediaページが見つかりました。");
+                    result = {
+                        embed: {
+                            title: "「" + word + "」の定義",
+                            description: search + "。",
+                            url: "https://ja.wikipedia.org/wiki/" + encodeURIComponent(word)
+                        }
+                    };
+                } else {
+                    writeLog("Wikipedia", "Wikipediaに「" + word + "」というページは存在しません。");
+                    result = {
+                        embed: {
+                            title: "Wikipediaに「" + word + "」というページは存在しません。",
+                            color: 16726072
+                        }
+                    };
+                }
+
+                sendMessage(channel, result);
             }
-
-            sendMessage(channel, result);
         }
     }
 });

@@ -29,7 +29,7 @@ client.on("message", message => {
         const mToha = /^(.*)\s#とは$/;
 
         if(sToha.test(message.content)) {
-            const messagetext = event.text.match(mToha);
+            const messagetext = message.content.match(mToha);
             if(1 in messagetext) {
                 const word = messagetext[1];
                 const search = wikipedia.search(word);

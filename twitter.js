@@ -12,6 +12,11 @@ bot.stream('user', {}, function(stream) {
         
         writeLog("ツイート受信", event.text + " <--- @" + event.user.screen_name);
 
+        if(event.retweeted_status) {
+            writeLog("RTフィルタ", "リツイートのためスキップ");
+            return;
+        }
+
         const sToha = /^(.*)#とは$/;
         const mToha = /^(.*)\s#とは$/;
 

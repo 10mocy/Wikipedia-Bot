@@ -1,14 +1,12 @@
-'use strict';
-
-const assert = require('assert');
 const Twitter = require('../twitter');
+const chai = require('chai');
 
 describe('twitter module', () => {
-	it('extract method', () => {
-		const validExtracted = Twitter.extract('Wikipedia #とは');
-		assert.equal(validExtracted, 'Wikipedia');
+  it('extract method', () => {
+    const validExtracted = Twitter.extract('Wikipedia #とは');
+    chai.assert.equal(validExtracted, 'Wikipedia');
 
-		const invalidExtracted = Twitter.extract('関係ないツイート');
-		assert.equal(invalidExtracted, null);
-	});
+    const invalidExtracted = Twitter.extract('関係ないツイート');
+    chai.assert.equal(invalidExtracted, null);
+  });
 });

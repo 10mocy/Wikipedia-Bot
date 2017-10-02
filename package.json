@@ -1,16 +1,38 @@
 {
   "name": "wikipedia",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "description": "",
   "main": "wikipedia.js",
+  "files": [
+    "discord.js",
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "twitter.js",
+    "readme.js",
+    "token.js",
+    "token.sample.js"
+  ],
   "scripts": {
+    "start-twitter": "node ./twitter",
+    "start-discord": "node ./discord",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "discord": "^0.8.2",
+    "discord.js": "^11.2.1",
+    "eslint": "^4.8.0",
     "sync-request": "^4.1.0",
     "twitter": "^1.7.1"
+  },
+  "devDependencies": {
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.2.0",
+    "mocha": "^3.5.3"
   }
 }

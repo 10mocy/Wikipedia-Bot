@@ -1,3 +1,6 @@
+/*eslint no-console: ["error", { allow: ["log"] }] */
+'use strict';
+
 const Discord = require("discord.js");
 const wikipedia = require("./wikipedia.js");
 const token = require("./token.js");
@@ -69,6 +72,7 @@ function writeLog(title, detail) {
     console.log("-----\n"+ title + "\n\n    " + detail + "\n");
 }
 
+// never used(yet).
 function replace(source, replacers) {
     let replaced = source;
     for(const replacer of replacers) {

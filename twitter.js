@@ -1,3 +1,6 @@
+/*eslint no-console: ["error", { allow: ["log"] }] */
+'use strict';
+
 const twitter = require("twitter");
 const wikipedia = require("./wikipedia.js");
 const token = require("./token.js");
@@ -50,6 +53,7 @@ function sendMessage(text, replyid, screen_name) {
         status: "@" + screen_name + " " + text, 
         in_reply_to_status_id: replyid
     })
+        // tweet variable never used(yet).
         .then(function (tweet) {
             writeLog("ツイート送信", text + " ---> @" + screen_name);
         })

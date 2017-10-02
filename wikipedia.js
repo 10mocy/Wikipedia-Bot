@@ -1,3 +1,5 @@
+'use strict';
+
 const request = require('sync-request');
 
 exports.search = function(word) {
@@ -24,8 +26,8 @@ exports.search = function(word) {
             result = null;
         } else {
             // 存在する時
-            let wikiinfo; // Wikipedia 情報取得管理
-            for(key in data.query.pages) {
+            let wikiinfo; // Wikipedia 情報取得管理(これなにに使ってるの？)
+            for(let key in data.query.pages) {
                 result = data["query"]["pages"][key]["extract"].split(/。/)[0] + "。";
             }
         }

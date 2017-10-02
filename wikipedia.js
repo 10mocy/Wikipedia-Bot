@@ -1,37 +1,31 @@
-'use strict';
-
 const request = require('sync-request');
 
+const extractPage = pages => Object.entries(pages).map(page => page[1].extract)[0];
+
 exports.search = (word) => {
-    
-	const wikicontent = /(.*):(.*)/;
-    
-	let result;
+  const wikicontent = /(.*):(.*)/;
 
-	if(!wikicontent.test(word)) {
+  let result;
 
-		const endpoint = 'https://ja.wikipedia.org/w/api.php';
-		const parameter = '?action=query&format=json&prop=extracts&redirects=1&explaintext=1&titles=' + encodeURIComponent(word);
-		let data;
-        
-		/*request('GET', endpoint + parameter, (res) => {
+  if (!wikicontent.test(word)) {
+    const endpoint = 'https://ja.wikipedia.org/w/api.php';
+    const parameter = `?action=query&format=json&prop=extracts&redirects=1&explaintext=1&titles=${encodeURIComponent(word)}`;
+
+    /* request('GET', endpoint + parameter, (res) => {
             console.log(res.getBody());
-        });*/
-		var res = request('GET', endpoint + parameter);
-		const content = res.getBody('utf8');
-		data = JSON.parse(content);
-        
-		if(-1 in data.query.pages) {
-			// 存在しない時
-			result = null;
-		} else {
-			// 存在する時
-			for(let key in data.query.pages) {
-				result = data['query']['pages'][key]['extract'].split(/。/)[0] + '。';
-			}
-		}
+        }); */
+    const res = request('GET', endpoint + parameter);
+    const content = res.getBody('utf8');
+    const data = JSON.parse(content);
 
-		/*https.get(, (res) => {
+    if (-1 in data.query.pages) {
+      // 存在しない時
+      result = null;
+    } else {
+      result = extractPage(data.query.pages);
+    }
+
+    /* https.get(, (res) => {
             res.setEncoding('utf8');
 
             // データ取得
@@ -41,8 +35,8 @@ exports.search = (word) => {
 
             // データ整形
             res.on('end', (res) => {
-                data = JSON.parse(content);
-                
+                const data = JSON.parse(content);
+
                 if(-1 in data.query.pages) {
                     // 存在しない時
                     result = null;
@@ -54,10 +48,13 @@ exports.search = (word) => {
                     }
                 }
             });
-            
-        });*/
-	} else {
-		result = null;
-	}
-	return result;
+
+        }); */
+  } else {
+    result = null;
+  }
+  return result;
 };
+
+// テスト用
+exports.extractPage = extractPage;

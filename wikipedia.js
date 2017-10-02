@@ -2,7 +2,7 @@
 
 const request = require('sync-request');
 
-exports.search = function(word) {
+exports.search = (word) => {
     
 	const wikicontent = /(.*):(.*)/;
     

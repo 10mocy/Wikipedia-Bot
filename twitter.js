@@ -8,48 +8,24 @@ const token = require('./token.js');
 
 const bot = new twitter(token.twitter);
 
-writeLog('システム', '準備が整いました。');
+const writeLog = (title, detail) => {
+	console.log('-----\n'+ title + '\n\n    ' + detail + '\n');
+};
 
-bot.stream('user', {}, function(stream) {
 
-	stream.on('data', function(event) {
-        
-		if(event.retweeted_status) {
-			writeLog('RTフィルタ', 'リツイートのためスキップ');
-			return;
-		}
-        
-		const word = extract(event.text);
-		if (word != null) {
-			writeLog('ツイート受信', event.text + ' <--- @' + event.user.screen_name);            
-			const search = wikipedia.search(word);
-			const tweet = generateTweet(word, search);
-			sendMessage(tweet, event.id_str, event.user.screen_name);    
-		}
-	});
-
-	stream.on('error', function(error) {
-		throw error;
-	});
-});
-
-function sendMessage(text, replyid, screen_name) {
+const sendMessage = (text, replyid, screen_name) => {
 	bot.post('statuses/update', {
 		status: '@' + screen_name + ' ' + text, 
 		in_reply_to_status_id: replyid
 	})
 	// tweet variable never used(yet).
-		.then(function () {
+		.then(() => {
 			writeLog('ツイート送信', text + ' ---> @' + screen_name);
 		})
-		.catch(function (error) {
+		.catch((error) => {
 			throw error;
 		});
-}
-
-function writeLog(title, detail) {
-	console.log('-----\n'+ title + '\n\n    ' + detail + '\n');
-}
+};
 
 const extract = (tweet) => {
 	const sToha = /^(.*)#とは$/;
@@ -73,6 +49,31 @@ const generateTweet = (word, search) => {
 		return result;
 	}
 };
+
+writeLog('システム', '準備が整いました。');
+
+bot.stream('user', {}, (stream) => {
+
+	stream.on('data', (event) => {
+        
+		if(event.retweeted_status) {
+			writeLog('RTフィルタ', 'リツイートのためスキップ');
+			return;
+		}
+        
+		const word = extract(event.text);
+		if (word != null) {
+			writeLog('ツイート受信', event.text + ' <--- @' + event.user.screen_name);            
+			const search = wikipedia.search(word);
+			const tweet = generateTweet(word, search);
+			sendMessage(tweet, event.id_str, event.user.screen_name);    
+		}
+	});
+
+	stream.on('error', (error) => {
+		throw error;
+	});
+});
 
 // テスト用
 exports.extract = extract;

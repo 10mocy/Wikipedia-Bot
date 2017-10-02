@@ -1,6 +1,9 @@
 {
   "name": "wikipedia",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "description": "",
   "main": "wikipedia.js",
   "files": [
@@ -28,6 +31,8 @@
     "twitter": "^1.7.1"
   },
   "devDependencies": {
-    "eslint-plugin-node": "^5.2.0"
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.2.0",
+    "mocha": "^3.5.3"
   }
 }

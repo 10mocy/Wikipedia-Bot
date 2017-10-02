@@ -35,4 +35,4 @@ Wikipediaの情報を、Discord / Twitterに送信します。
 * [sync-request](https://www.npmjs.com/package/sync-request)
 
 ## ライセンス
-- [クリエイティブ・コモンズ 表示-継承ライセンス(CC BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/deed)
+[クリエイティブ・コモンズ 表示-継承ライセンス(CC BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/deed)
